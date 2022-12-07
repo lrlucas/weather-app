@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../model/day_model.dart';
+
 class ListDays extends StatelessWidget {
-  const ListDays({Key? key}) : super(key: key);
+  ListDays({
+    Key? key,
+    required this.listday,
+  }) : super(key: key);
+  List<DayModel> listday;
 
   @override
   Widget build(BuildContext context) {
@@ -9,41 +15,21 @@ class ListDays extends StatelessWidget {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Row(
-              children: const [
-                Text(
-                  'Today, 18 Sep',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
+          children: listday
+              .map(
+                (day) => Row(
+                  children: [
+                    Text(
+                      day.nameFormatted ?? '',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            Row(
-              children: const [
-                Text(
-                  'Today, 18 Sep',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: const [
-                Text(
-                  'Today, 18 Sep',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ],
+              )
+              .toList(),
         ),
       ],
     );
