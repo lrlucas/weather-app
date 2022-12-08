@@ -16,3 +16,8 @@ class ListDaysButtons extends HomeState {
 
   ListDaysButtons(this.list);
 }
+
+class DailyWeatherForecast extends HomeState {
+  final WeatherForecast weatherForecast;
+  DailyWeatherForecast(this.weatherForecast);
+}

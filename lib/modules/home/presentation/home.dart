@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/styles/style.constant.dart';
 import '../data/models/weather.model.dart';
+import '../data/models/weather_forecast.model.dart';
 import 'cubit/home/home.cubit.dart';
 import 'cubit/listDayWeather/listDayWeather.cubit.dart';
 import 'model/day_model.dart';
@@ -22,8 +23,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   WeatherModel? _weatherModel;
   List<DayModel> listday = [];
-  DateTime? _time = DateTime.now();
   List<DayWeatherModel> daysWeather = [];
+  WeatherForecast? _weatherForecast;
 
   ListDayWeatherCubit listDayWeatherCubit = ListDayWeatherCubit();
 
@@ -70,6 +71,14 @@ class _HomePageState extends State<HomePage> {
               setState(() {
                 listday = state.list;
               });
+            } else if (state is DailyWeatherForecast) {
+              setState(() {
+                _weatherForecast = state.weatherForecast;
+                listDayWeatherCubit.getTimeEvery3hours2(
+                  state.weatherForecast,
+                  DateTime.now(),
+                );
+              });
             }
           },
           builder: (context, state) {
@@ -109,8 +118,12 @@ class _HomePageState extends State<HomePage> {
                     ListDays(
                       listday: listday,
                       onPressed: (DateTime? time) {
-                        listDayWeatherCubit.getTimeEvery3hours(
-                          'Santa Cruz de la Sierra',
+                        // listDayWeatherCubit.getTimeEvery3hours(
+                        //   'Santa Cruz de la Sierra',
+                        //   time,
+                        // );
+                        listDayWeatherCubit.getTimeEvery3hours2(
+                          _weatherForecast,
                           time,
                         );
                       },

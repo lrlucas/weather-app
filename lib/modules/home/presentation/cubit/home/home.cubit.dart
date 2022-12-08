@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weather_app/modules/home/data/models/weather.model.dart';
-import 'package:weather_app/modules/home/presentation/model/day_model.dart';
-
+import '../../model/day_model.dart';
+import '../../../data/models/weather.model.dart';
 import '../../../data/repositories/home.repository.dart';
+import '../../../data/models/weather_forecast.model.dart';
 
 part 'home.state.dart';
 
@@ -40,6 +40,9 @@ class HomeCubit extends Cubit<HomeState> {
   void getWeather(String query) async {
     emit(Loading());
     final resp = await _homeRepository.getWeather(query);
+    _homeRepository
+        .getTimeEvery3hours(query)
+        .then((value) => emit(DailyWeatherForecast(value)));
     final listDays = getDate3Days();
     emit(WeatherData(resp));
     emit(ListDaysButtons(listDays));

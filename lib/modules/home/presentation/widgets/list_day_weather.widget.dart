@@ -39,7 +39,6 @@ class _ListDayWeatherState extends State<ListDayWeather> {
               : Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: widget.daysWeather.map((day) {
-                    print(day.icon);
                     return Row(
                       children: [
                         const SizedBox(
