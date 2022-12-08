@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../data/models/weather.model.dart';
 import '../../../core/styles/style.constant.dart';
-import 'cubit/home.cubit.dart';
+import '../data/models/weather.model.dart';
+import 'cubit/home/home.cubit.dart';
+import 'cubit/listDayWeather/listDayWeather.cubit.dart';
 import 'model/day_model.dart';
+import 'model/day_weather_model.dart';
+import 'widgets/custom_appbar.widget.dart';
 import 'widgets/info_text.widget.dart';
+import 'widgets/list_day_weather.widget.dart';
 import 'widgets/list_days.widget.dart';
 import 'widgets/weather_image.widget.dart';
-import 'widgets/custom_appbar.widget.dart';
-import 'widgets/list_day_weather.widget.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -20,6 +22,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   WeatherModel? _weatherModel;
   List<DayModel> listday = [];
+  DateTime? _time = DateTime.now();
+  List<DayWeatherModel> daysWeather = [];
+
+  ListDayWeatherCubit listDayWeatherCubit = ListDayWeatherCubit();
 
   Color? _getColorBackground(int? idWeather) {
     if (idWeather == 800) {
@@ -37,66 +43,90 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<HomeCubit>(
-      create: (context) => HomeCubit(),
-      child: BlocConsumer<HomeCubit, HomeState>(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<HomeCubit>(
+          create: (context) => HomeCubit(),
+        ),
+        BlocProvider<ListDayWeatherCubit>(
+          create: (context) => listDayWeatherCubit,
+        ),
+      ],
+      child: BlocListener<ListDayWeatherCubit, ListDayWeatherState>(
         listener: (context, state) {
-          if (state is WeatherData) {
+          if (state is DaysWeather) {
             setState(() {
-              _weatherModel = state.weatherModel;
-            });
-          } else if (state is ListDaysButtons) {
-            setState(() {
-              listday = state.list;
+              daysWeather = state.list;
             });
           }
         },
-        builder: (context, state) {
-          if (state is Loading) {
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator.adaptive(),
+        child: BlocConsumer<HomeCubit, HomeState>(
+          listener: (context, state) {
+            if (state is WeatherData) {
+              setState(() {
+                _weatherModel = state.weatherModel;
+              });
+            } else if (state is ListDaysButtons) {
+              setState(() {
+                listday = state.list;
+              });
+            }
+          },
+          builder: (context, state) {
+            if (state is Loading) {
+              return const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator.adaptive(),
+                ),
+              );
+            }
+            return Scaffold(
+              backgroundColor: _getColorBackground(
+                _weatherModel?.weather.first.id,
+              ),
+              body: SafeArea(
+                child: Column(
+                  children: [
+                    CustomAppBar(),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    WeatherImage(
+                      idWeather: _weatherModel?.weather.first.id,
+                    ),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    InfoText(
+                      temp: _weatherModel?.main.temp,
+                      windSpeed: _weatherModel?.wind.speed,
+                      humidity: _weatherModel?.main.humidity,
+                      weatherMain: _weatherModel?.weather.first.main,
+                    ),
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    ListDays(
+                      listday: listday,
+                      onPressed: (DateTime? time) {
+                        listDayWeatherCubit.getTimeEvery3hours(
+                          'Santa Cruz de la Sierra',
+                          time,
+                        );
+                      },
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    ListDayWeather(
+                      daysWeather: daysWeather,
+                    ),
+                  ],
+                ),
               ),
             );
-          }
-          return Scaffold(
-            backgroundColor: _getColorBackground(
-              _weatherModel?.weather.first.id,
-            ),
-            body: SafeArea(
-              child: Column(
-                children: [
-                  CustomAppBar(),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  WeatherImage(
-                    idWeather: _weatherModel?.weather.first.id,
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  InfoText(
-                    temp: _weatherModel?.main.temp,
-                    windSpeed: _weatherModel?.wind.speed,
-                    humidity: _weatherModel?.main.humidity,
-                    weatherMain: _weatherModel?.weather.first.main,
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  ListDays(
-                    listday: listday,
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  ListDayWeather(),
-                ],
-              ),
-            ),
-          );
-        },
+          },
+        ),
       ),
     );
   }

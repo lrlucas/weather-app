@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/modules/home/data/models/weather.model.dart';
 import 'package:weather_app/modules/home/presentation/model/day_model.dart';
 
-import '../../data/repositories/home.repository.dart';
+import '../../../data/repositories/home.repository.dart';
 
 part 'home.state.dart';
 
@@ -47,7 +47,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   List<DayModel> getDate3Days() {
     List<DayModel> _listday = [];
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < 5; i++) {
       var nameDay = '';
       final now = DateTime.now();
       final date = DateTime(now.year, now.month, now.day + i);
