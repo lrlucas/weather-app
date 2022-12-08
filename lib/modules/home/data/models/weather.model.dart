@@ -145,7 +145,7 @@ class Sys {
   });
 
   int? type;
-  int id;
+  int? id;
   String country;
   int sunrise;
   int sunset;

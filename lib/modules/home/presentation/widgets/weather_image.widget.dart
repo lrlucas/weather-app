@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class WeatherImage extends StatelessWidget {
   final int? idWeather;
   const WeatherImage({Key? key, this.idWeather}) : super(key: key);
+  final double _heightImage = 250;
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +12,7 @@ class WeatherImage extends StatelessWidget {
         children: [
           Image.asset(
             'assets/images/sun.png',
-            height: 300,
+            height: _heightImage,
           ),
         ],
       );
@@ -20,7 +21,7 @@ class WeatherImage extends StatelessWidget {
         children: [
           Image.asset(
             'assets/images/thunderstorm.png',
-            height: 300,
+            height: _heightImage,
           ),
         ],
       );
@@ -30,7 +31,7 @@ class WeatherImage extends StatelessWidget {
         children: [
           Image.asset(
             'assets/images/cloudy.png',
-            height: 300,
+            height: _heightImage,
           ),
         ],
       );
@@ -39,7 +40,7 @@ class WeatherImage extends StatelessWidget {
         children: [
           Image.asset(
             'assets/images/thunderstorm.png',
-            height: 300,
+            height: _heightImage,
           ),
         ],
       );
@@ -48,7 +49,7 @@ class WeatherImage extends StatelessWidget {
         children: [
           Image.asset(
             'assets/images/sun.png',
-            height: 300,
+            height: _heightImage,
           ),
         ],
       );

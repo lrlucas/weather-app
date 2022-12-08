@@ -25,7 +25,7 @@ class _ListDayWeatherState extends State<ListDayWeather> {
                 ),
                 child: Center(
                   child: Text(
-                    'No hay datos disponibles desde las 06:00 PM del dia de hoy',
+                    'No hay datos disponibles para el dia de hoy',
                   ),
                 ),
               )

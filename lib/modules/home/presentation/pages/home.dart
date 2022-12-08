@@ -96,47 +96,45 @@ class _HomePageState extends State<HomePage> {
                 _weatherModel?.weather.first.id,
               ),
               body: SafeArea(
-                child: Column(
-                  children: [
-                    CustomAppBar(),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    WeatherImage(
-                      idWeather: _weatherModel?.weather.first.id,
-                    ),
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    InfoText(
-                      temp: _weatherModel?.main.temp,
-                      windSpeed: _weatherModel?.wind.speed,
-                      humidity: _weatherModel?.main.humidity,
-                      weatherMain: _weatherModel?.weather.first.main,
-                    ),
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    ListDays(
-                      listday: listday,
-                      onPressed: (DateTime? time) {
-                        // listDayWeatherCubit.getTimeEvery3hours(
-                        //   'Santa Cruz de la Sierra',
-                        //   time,
-                        // );
-                        listDayWeatherCubit.getTimeEvery3hours2(
-                          _weatherForecast,
-                          time,
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    ListDayWeather(
-                      daysWeather: daysWeather,
-                    ),
-                  ],
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      CustomAppBar(),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      WeatherImage(
+                        idWeather: _weatherModel?.weather.first.id,
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      InfoText(
+                        temp: _weatherModel?.main.temp,
+                        windSpeed: _weatherModel?.wind.speed,
+                        humidity: _weatherModel?.main.humidity,
+                        weatherMain: _weatherModel?.weather.first.main,
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      ListDays(
+                        listday: listday,
+                        onPressed: (DateTime? time) {
+                          listDayWeatherCubit.getTimeEvery3hours2(
+                            _weatherForecast,
+                            time,
+                          );
+                        },
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      ListDayWeather(
+                        daysWeather: daysWeather,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
