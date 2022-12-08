@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../core/styles/style.constant.dart';
-import '../data/models/weather.model.dart';
-import '../data/models/weather_forecast.model.dart';
-import 'cubit/home/home.cubit.dart';
-import 'cubit/listDayWeather/listDayWeather.cubit.dart';
-import 'model/day_model.dart';
-import 'model/day_weather_model.dart';
-import 'widgets/custom_appbar.widget.dart';
-import 'widgets/info_text.widget.dart';
-import 'widgets/list_day_weather.widget.dart';
-import 'widgets/list_days.widget.dart';
-import 'widgets/weather_image.widget.dart';
+import '../model/day_model.dart';
+import '../cubit/home/home.cubit.dart';
+import '../model/day_weather_model.dart';
+import '../widgets/info_text.widget.dart';
+import '../widgets/list_days.widget.dart';
+import '../../data/models/weather.model.dart';
+import '../widgets/custom_appbar.widget.dart';
+import '../widgets/weather_image.widget.dart';
+import '../widgets/list_day_weather.widget.dart';
+import '../../../../core/styles/style.constant.dart';
+import '../../data/models/weather_forecast.model.dart';
+import '../cubit/listDayWeather/listDayWeather.cubit.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -89,6 +89,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             }
+
+            /// TODO: agregar un pull to refresh
             return Scaffold(
               backgroundColor: _getColorBackground(
                 _weatherModel?.weather.first.id,
