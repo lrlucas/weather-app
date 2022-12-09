@@ -5,6 +5,7 @@ import '../cubit/home/home.cubit.dart';
 import '../model/day_weather_model.dart';
 import '../widgets/info_text.widget.dart';
 import '../widgets/list_days.widget.dart';
+import '../../data/models/city.model.dart';
 import '../../data/models/weather.model.dart';
 import '../widgets/custom_appbar.widget.dart';
 import '../widgets/weather_image.widget.dart';
@@ -25,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   List<DayModel> listday = [];
   List<DayWeatherModel> daysWeather = [];
   WeatherForecast? _weatherForecast;
-
+  List<CityModel> listCities = [];
   ListDayWeatherCubit listDayWeatherCubit = ListDayWeatherCubit();
 
   Color? _getColorBackground(int? idWeather) {
@@ -79,17 +80,35 @@ class _HomePageState extends State<HomePage> {
                   DateTime.now(),
                 );
               });
+            } else if (state is ListCities) {
+              setState(() {
+                listCities = state.list;
+              });
+            } else if (state is ShowErrorGetWeather) {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text("Ciudad no encontrada"),
+                      content: const Text("Intente con otra ciudad"),
+                      titleTextStyle: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 20),
+                      actionsOverflowButtonSpacing: 20,
+                      actions: [
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text("Ok"),
+                        ),
+                      ],
+                    );
+                  });
             }
           },
           builder: (context, state) {
-            if (state is Loading) {
-              return const Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator.adaptive(),
-                ),
-              );
-            }
-
             return Scaffold(
               backgroundColor: _getColorBackground(
                 _weatherModel?.weather.first.id,
@@ -101,7 +120,9 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(
                         height: StyleConstans.safeSpaceMedium,
                       ),
-                      CustomAppBar(),
+                      CustomAppBar(
+                        list: listCities,
+                      ),
                       const SizedBox(
                         height: 40,
                       ),

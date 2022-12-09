@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../model/day_model.dart';
+import '../../../data/models/city.model.dart';
 import '../../../data/models/weather.model.dart';
 import '../../../data/repositories/home.repository.dart';
 import '../../../data/models/weather_forecast.model.dart';
@@ -32,20 +34,36 @@ class HomeCubit extends Cubit<HomeState> {
     12: 'Dic',
   };
 
+  final String defaultCity = 'San francisco';
+
   HomeCubit() : super(InitState()) {
-    getWeather('Santa Cruz de la Sierra');
-    // getWeather('San francisco');
+    getWeather(defaultCity);
+    getCities();
+  }
+
+  void citySelected(String cityName) {
+    getWeather(cityName);
   }
 
   void getWeather(String query) async {
-    emit(Loading());
-    final resp = await _homeRepository.getWeather(query);
-    _homeRepository
-        .getTimeEvery3hours(query)
-        .then((value) => emit(DailyWeatherForecast(value)));
-    final listDays = getDate3Days();
-    emit(WeatherData(resp));
-    emit(ListDaysButtons(listDays));
+    try {
+      final weatherData = await _homeRepository.getWeather(query);
+      _homeRepository
+          .getTimeEvery3hours(query)
+          .then((value) => emit(DailyWeatherForecast(value)));
+      final listDays = getDate3Days();
+      emit(WeatherData(weatherData));
+      emit(ListDaysButtons(listDays));
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 404) {
+        emit(ShowErrorGetWeather());
+      }
+    }
+  }
+
+  void getCities() async {
+    final listCities = await _homeRepository.getCityNames();
+    emit(ListCities(listCities));
   }
 
   List<DayModel> getDate3Days() {

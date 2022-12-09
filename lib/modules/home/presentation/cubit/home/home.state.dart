@@ -21,3 +21,10 @@ class DailyWeatherForecast extends HomeState {
   final WeatherForecast weatherForecast;
   DailyWeatherForecast(this.weatherForecast);
 }
+
+class ListCities extends HomeState {
+  final List<CityModel> list;
+  ListCities(this.list);
+}
+
+class ShowErrorGetWeather extends HomeState {}

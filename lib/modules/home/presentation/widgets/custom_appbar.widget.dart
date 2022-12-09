@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/modules/home/data/models/city.model.dart';
 import 'pin_name_location.widget.dart';
 import '../../../../core/styles/style.constant.dart';
 import '../../../details/presentation/page/detail.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({Key? key}) : super(key: key);
+  final List<CityModel> list;
+  const CustomAppBar({
+    Key? key,
+    required this.list,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +21,9 @@ class CustomAppBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            PinNameLocation(),
+            PinNameLocation(
+              list: list,
+            ),
             Row(
               children: [
                 TextButton(
