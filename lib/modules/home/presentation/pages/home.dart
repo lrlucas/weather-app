@@ -90,7 +90,6 @@ class _HomePageState extends State<HomePage> {
               );
             }
 
-            /// TODO: agregar un pull to refresh
             return Scaffold(
               backgroundColor: _getColorBackground(
                 _weatherModel?.weather.first.id,
@@ -99,6 +98,9 @@ class _HomePageState extends State<HomePage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
+                      const SizedBox(
+                        height: StyleConstans.safeSpaceMedium,
+                      ),
                       CustomAppBar(),
                       const SizedBox(
                         height: 40,

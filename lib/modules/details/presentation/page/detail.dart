@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/core/styles/style.constant.dart';
 import '../widget/appbar_detail.widget.dart';
 import '../widget/point_position.widget.dart';
 import '../widget/suggestionCard.widget.dart';
@@ -65,7 +66,6 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: const Color(0xff232535),
       body: SafeArea(
@@ -73,6 +73,9 @@ class _DetailPageState extends State<DetailPage> {
           children: [
             Column(
               children: [
+                const SizedBox(
+                  height: StyleConstans.safeSpaceMedium,
+                ),
                 const AppbarDetail(),
                 const SizedBox(
                   height: 80,
