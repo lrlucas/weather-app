@@ -16,7 +16,7 @@ class CustomAppBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const PinNameLocation(),
+            PinNameLocation(),
             Row(
               children: [
                 TextButton(
@@ -25,9 +25,6 @@ class CustomAppBar extends StatelessWidget {
                     color: Colors.black,
                   ),
                   onPressed: () {},
-                ),
-                const SizedBox(
-                  width: 30,
                 ),
                 TextButton(
                   child: const Icon(
